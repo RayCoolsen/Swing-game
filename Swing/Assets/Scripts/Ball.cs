@@ -44,6 +44,11 @@ public class Ball : MonoBehaviour
     public void Pop()
     {
         //Play pop Animation/Shader???
+        LeanTween.scale(gameObject, Vector3.zero, 0.5f).setEase(LeanTweenType.easeOutQuint).setOnComplete(Kill);
+    }
+
+    private  void Kill()
+    {
         Destroy(gameObject);
     }
 }

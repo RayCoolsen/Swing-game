@@ -216,6 +216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 988214380}
   - component: {fileID: 988214379}
+  - component: {fileID: 988214381}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -255,6 +256,209 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &988214381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988214378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db8b04d1ebf7f1488244e112c911559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionThrowCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.7
+      value: 1.05
+      inSlope: 2.2921197
+      outSlope: -4.951601
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.021361576
+      outWeight: 0.20726503
+    - serializedVersion: 3
+      time: 0.9
+      value: 1
+      inSlope: 2.3875656
+      outSlope: -3.4708915
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.08718578
+      outWeight: 0.05339981
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.61896944
+      outSlope: 0.61896944
+      tangentMode: 0
+      weightedMode: 1
+      inWeight: 0.2226816
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  scaleThrowCurveY:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.7
+      value: 0.5
+      inSlope: 1.3846741
+      outSlope: -1042.9196
+      tangentMode: 1
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.013750909
+    - serializedVersion: 3
+      time: 0.7008808
+      value: -0.4956814
+      inSlope: -1.0736189
+      outSlope: -1.0736189
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.5751827
+      outWeight: 0.3013584
+    - serializedVersion: 3
+      time: 0.9
+      value: 0.1
+      inSlope: 1.9245679
+      outSlope: -15.884224
+      tangentMode: 1
+      weightedMode: 1
+      inWeight: 0.26942477
+      outWeight: 0.038461678
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  scaleThrowCurveX:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.7
+      value: 0.5
+      inSlope: 1.3846741
+      outSlope: -1042.9196
+      tangentMode: 1
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.013750909
+    - serializedVersion: 3
+      time: 0.7008808
+      value: -0.4956814
+      inSlope: -1.0736189
+      outSlope: -1.0736189
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.5751827
+      outWeight: 0.3013584
+    - serializedVersion: 3
+      time: 0.9
+      value: 0.1
+      inSlope: 1.9245679
+      outSlope: -15.884224
+      tangentMode: 1
+      weightedMode: 1
+      inWeight: 0.26942477
+      outWeight: 0.038461678
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  tweenThrowSpeed: 0.1
+  collapseTime: 0.1
+  collapseEaseType: 1
+  playerSizeTween: {x: 0.5, y: 0.5, z: 0.5}
+  playertweentime: 0.2
+  scalePlayerSizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.75
+      value: -1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1541399768 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 242438042516234826, guid: 1315cf72976f88041a363ac6c535152c, type: 3}

@@ -25,6 +25,10 @@ public class ScaleGrid : MonoBehaviour
     [SerializeField] private int startmaxweight = 5;
     [SerializeField] private int startmaxtype = 3;
 
+
+    private Tween tween;
+    private bool tweening = false;
+
     enum ScalePosition // Which side is down
     {
         Left,
@@ -38,6 +42,7 @@ public class ScaleGrid : MonoBehaviour
     private void Awake()
     {
         p_SpriteRenderer = player.GetComponent<SpriteRenderer>();
+        tween = GetComponent<Tween>();
     }
 
     private void Start()
@@ -77,6 +82,7 @@ public class ScaleGrid : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow) && playerpos < width-1)
         {
+            tween.PlayerSizeTween(player);
             player.transform.position += Vector3.right;
             playerpos++;
             if(playerball != null)
@@ -85,6 +91,7 @@ public class ScaleGrid : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow) && playerpos > 0)
         {
+            tween.PlayerSizeTween(player);
             player.transform.position += Vector3.left;
             playerpos--;
             if (playerball != null)
@@ -95,7 +102,7 @@ public class ScaleGrid : MonoBehaviour
         {
             //Throwing Ball
             if(playerball!=null)
-                ThrowingBall(playerpos, playerball);
+                StartCoroutine(ThrowingBall(playerpos, playerball));
 
             //Loading New Ball
             playerball = supplyGrid[playerpos, 0];
@@ -103,28 +110,38 @@ public class ScaleGrid : MonoBehaviour
 
             // New Ball Supply
             SupplyReload(playerpos);
+            ScaleHeight(playerpos);
             HeightWarning(playerpos);
         }
+
     }
 
-    private void ThrowingBall(int slot, GameObject ball)
+    IEnumerator ThrowingBall(int slot, GameObject ball)
     {
         int y = ScaleHeight(slot);
         if (y < height)
         {
             scaleGrid[slot, y] = ball;
-            scaleGrid[slot, y].transform.position = new Vector3(slot, y, 0);
 
+            //scaleGrid[slot, y].transform.position = new Vector3(slot, y, 0);
+            tweening = true;
+            tween.ThrowTween(scaleGrid[slot, y], new Vector3(slot, y, 0));
             SlotWeight(slot);
-            
+
+            yield return new WaitWhile(() => tweening);
+
+            Debug.Log("StartCalculating");
+
             while (CheckMatches())
             {
+                yield return new WaitForSeconds(0.5f); // Give Balls time to pop ???
                 CollapseScaleGrid();
+                yield return new WaitForSeconds(tween.GetCollapseTime()); // Waiting for the Collapse to finish
             }
 
             //BallCompression
 
-            
+
             for (int x = 0; x < width; x++)
             {
                 ScaleHeight(x);
@@ -132,6 +149,19 @@ public class ScaleGrid : MonoBehaviour
             }
 
             TiltScales();
+
+            for (int x = 0; x < width; x++)
+            {
+                ScaleHeight(x);
+                SlotWeight(x);
+
+                if (slotheight[x] >= height)
+                {
+                    Debug.Log("GameOver!");
+                }
+            }
+
+
 
             //Loop1
             // Loop2
@@ -149,23 +179,14 @@ public class ScaleGrid : MonoBehaviour
 
 
             //Test
-            for (int x = 0; x < width; x++)
-            {
-                ScaleHeight(x);
-                SlotWeight(x);
-
-                if(slotheight[x] >= height)
-                {
-                    Debug.Log("GameOver!");
-                }
-            }
-            
         }
         else
         {
             Debug.Log("GameOver!");
             Destroy(playerball);
         }
+        yield return null;
+
     }
 
     private int ScaleHeight(int slot)
@@ -330,11 +351,12 @@ public class ScaleGrid : MonoBehaviour
                 i++;
             }
         }
+        tween.CollapseTween(x, temp_array);
         for (int y = 0; y < height; y++)
         {
             scaleGrid[x, y] = temp_array[y];
-            if (scaleGrid[x, y] != null)
-                scaleGrid[x, y].transform.position = new Vector3(x, y, 0);
+            //if (scaleGrid[x, y] != null)
+            //    scaleGrid[x, y].transform.position = new Vector3(x, y, 0);
         }
     }
 
@@ -367,7 +389,7 @@ public class ScaleGrid : MonoBehaviour
             int weightdifference = slotweight[rechts] - slotweight[links];
 
             Debug.Log("Tilt old: " + scalePositions[i] + " new: " + newScalePos);
-            Debug.Log(change);
+            Debug.Log("ScalePosition change: " + change);
             Debug.Log("weightdifference: " + weightdifference);
 
             if (change <= -1 && scaleGrid[links, 0] != null && scaleGrid[links, 0].GetComponent<Ball>().GetBallType() == -1)
@@ -422,7 +444,8 @@ public class ScaleGrid : MonoBehaviour
 
                 Debug.Log("Yeet!!!");
 
-                ThrowingBall(YeetResult.Item1, yeetball);
+                //ThrowingBall(YeetResult.Item1, yeetball);
+                StartCoroutine(ThrowingBall(YeetResult.Item1, yeetball));
                 /////////////////////////////////////////////
             }
         }
@@ -500,5 +523,10 @@ public class ScaleGrid : MonoBehaviour
         {
             p_SpriteRenderer.color = Color.white;
         }
+    }
+
+    public void SetTweeningState(bool state)
+    {
+        tweening = state;
     }
 }
