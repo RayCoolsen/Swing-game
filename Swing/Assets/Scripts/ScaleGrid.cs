@@ -168,12 +168,13 @@ public class ScaleGrid : MonoBehaviour
                         {
                             tweening = true;
                             // Tweening
-                            tween.YeetBallTween(yeetball, new Vector3(YeetResult.Item1, height - 0.5f, 0), 1, 1);
+                            tween.YeetBallTween(yeetball, new Vector3(YeetResult.Item1, height - 0.5f, 0), YeetResult.Item2, newyeet.Item3);
                             // wait
                             yield return new WaitWhile(() => tweening);
 
                             //ThrowingBall(YeetResult.Item1, yeetball);
                             StartCoroutine(ThrowingBall(YeetResult.Item1, yeetball));
+                            yield break; // Möglicherweise sollten zuerst alle Yeetbälle gefunden werden und sie dann alle gleichzeitig yeeten.
                         }
                     }
 
@@ -485,7 +486,9 @@ public class ScaleGrid : MonoBehaviour
     private (int, int)  YeetImpact (int startingslot, int distance)
     {
         int endslot = (startingslot + distance) % width;
-        int fullrounds = (startingslot + distance) / width;
+        int fullrounds = Mathf.Abs(Mathf.FloorToInt((startingslot + distance)*1f / width));
+
+        
 
         if (endslot < 0)
             endslot += width;

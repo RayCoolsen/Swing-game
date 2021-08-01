@@ -20,6 +20,11 @@ public class Tween : MonoBehaviour
     [SerializeField] private AnimationCurve scaleUpYeetCurveY;
     [SerializeField] private AnimationCurve scaleUpYeetCurveX;
 
+    [SerializeField] private Transform leftOut;
+    [SerializeField] private Transform rightOut;
+    [SerializeField] private AnimationCurve scaleSideYeetCurveY;
+    [SerializeField] private AnimationCurve scaleSideYeetCurveX;
+
 
     [Header("Player Tweening")]
     [SerializeField] private Vector3 playerSizeTween = Vector3.one * 0.5f;
@@ -74,11 +79,39 @@ public class Tween : MonoBehaviour
     public void YeetBallTween(GameObject ball, Vector3 tweenposition, int fullrounds, int direction)
     {
         //Starting with yeeting up
-        float tweenDurationUp = tweenposition.y - ball.transform.position.y * tweenUpYeetSpeed;
+        float tweenDurationUp = (tweenposition.y - ball.transform.position.y) * tweenUpYeetSpeed;
         Vector3 tweenUpPosition = new Vector3(ball.transform.position.x, tweenposition.y, 0);
 
         LeanTween.scaleY(ball, 2f, tweenDurationUp).setEase(scaleUpYeetCurveY);
         LeanTween.scaleX(ball, 0.5f, tweenDurationUp).setEase(scaleUpYeetCurveX);
-        LeanTween.move(ball, tweenUpPosition, tweenDurationUp).setEase(positionUpYeetCurve).setOnComplete(FinishBallTween);
+        LeanTween.move(ball, tweenUpPosition, tweenDurationUp).setEase(positionUpYeetCurve).setOnComplete(() => YeetSidewaysTween(ball, tweenposition, fullrounds, direction));
+        //.setOnComplete(FinishBallTween);
+    }
+
+    private void YeetSidewaysTween(GameObject ball, Vector3 tweenposition, int fullrounds, int direction)
+    {
+        Transform wayout;
+        float yeetSideDuration;
+
+        if (direction < 0)
+        {
+            wayout = leftOut;
+        }
+        else
+        {
+            wayout = rightOut;
+        }
+
+        Debug.Log("fullrounds: " + fullrounds);
+
+        if (fullrounds > 0)
+        {
+            yeetSideDuration = Mathf.Abs((wayout.transform.position.x - ball.transform.position.x) * tweenUpYeetSpeed);
+            LeanTween.scaleY(ball, 0.5f, yeetSideDuration).setEase(scaleSideYeetCurveY);
+            LeanTween.scaleX(ball, 2f, yeetSideDuration).setEase(scaleSideYeetCurveX);
+            LeanTween.move(ball, wayout, yeetSideDuration).setEase(LeanTweenType.linear).setOnComplete(() => YeetSidewaysTween(ball, tweenposition, fullrounds, direction));
+        }
+
+        Debug.Log("It works ???" + tweenposition);
     }
 }
