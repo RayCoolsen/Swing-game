@@ -29,6 +29,8 @@ public class ScaleGrid : MonoBehaviour
     private Tween tween;
     private bool tweening = false;
 
+    private bool gameover = false;
+
     enum ScalePosition // Which side is down
     {
         Left,
@@ -80,6 +82,9 @@ public class ScaleGrid : MonoBehaviour
 
     private void Update()
     {
+        if (gameover)
+            return;
+
         //+++ WeightScaleTipWarning
         if (Input.GetKeyDown(KeyCode.RightArrow) && playerpos < width-1)
         {
@@ -190,7 +195,7 @@ public class ScaleGrid : MonoBehaviour
 
                 if (slotheight[x] >= height)
                 {
-                    Debug.Log("GameOver!");
+                    GameOver();
                 }
             }
 
@@ -214,8 +219,8 @@ public class ScaleGrid : MonoBehaviour
         }
         else
         {
-            Debug.Log("GameOver!");
             Destroy(playerball);
+            GameOver();
         }
         yield return null;
 
@@ -503,7 +508,7 @@ public class ScaleGrid : MonoBehaviour
     {
         //GameOver?
         if (slotheight[slot] == height - 1)
-            Debug.Log("GameOver?");
+            GameOver();
 
         for (int y = height - 1; y > 0; y--)
         {
@@ -544,5 +549,11 @@ public class ScaleGrid : MonoBehaviour
     public void SetTweeningState(bool state)
     {
         tweening = state;
+    }
+
+    private void GameOver()
+    {
+        Debug.Log("Game Over!");
+        gameover = true;
     }
 }

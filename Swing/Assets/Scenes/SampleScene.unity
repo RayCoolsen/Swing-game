@@ -506,6 +506,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  tweenSideYeetSpeed: 0.05
   leftOut: {fileID: 1486498911}
   rightOut: {fileID: 2063200160}
   scaleSideYeetCurveY:

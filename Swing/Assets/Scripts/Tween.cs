@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Tween : MonoBehaviour
@@ -19,7 +18,8 @@ public class Tween : MonoBehaviour
     [SerializeField] private AnimationCurve positionUpYeetCurve;
     [SerializeField] private AnimationCurve scaleUpYeetCurveY;
     [SerializeField] private AnimationCurve scaleUpYeetCurveX;
-
+    
+    [SerializeField] private float tweenSideYeetSpeed = 1f;
     [SerializeField] private Transform leftOut;
     [SerializeField] private Transform rightOut;
     [SerializeField] private AnimationCurve scaleSideYeetCurveY;
@@ -51,11 +51,12 @@ public class Tween : MonoBehaviour
         float tweenduration = (tweenposition - ball.transform.position).magnitude * tweenThrowSpeed;
         LeanTween.scaleY(ball, 2f, tweenduration).setEase(scaleThrowCurveY);
         LeanTween.scaleX(ball, 0f, tweenduration).setEase(scaleThrowCurveX);
-        LeanTween.move(ball, tweenposition, tweenduration).setEase(positionThrowCurve).setOnComplete(FinishBallTween);
+        LeanTween.move(ball, tweenposition, tweenduration).setEase(positionThrowCurve).setOnComplete(() => FinishBallTween(ball));
     }
 
-    private void FinishBallTween()
+    private void FinishBallTween(GameObject ball)
     {
+        ball.transform.localScale = Vector3.one;
         scaleGrid.SetTweeningState(false);
         Debug.Log("Done Tweening!!!");
     }
@@ -91,27 +92,49 @@ public class Tween : MonoBehaviour
     private void YeetSidewaysTween(GameObject ball, Vector3 tweenposition, int fullrounds, int direction)
     {
         Transform wayout;
+        Transform wayin;
+        Vector3 yeettarget;
         float yeetSideDuration;
+        Action onComplete;
 
         if (direction < 0)
         {
             wayout = leftOut;
+            wayin = rightOut;
         }
         else
         {
             wayout = rightOut;
+            wayin = leftOut;
         }
 
         Debug.Log("fullrounds: " + fullrounds);
 
         if (fullrounds > 0)
         {
-            yeetSideDuration = Mathf.Abs((wayout.transform.position.x - ball.transform.position.x) * tweenUpYeetSpeed);
-            LeanTween.scaleY(ball, 0.5f, yeetSideDuration).setEase(scaleSideYeetCurveY);
-            LeanTween.scaleX(ball, 2f, yeetSideDuration).setEase(scaleSideYeetCurveX);
-            LeanTween.move(ball, wayout, yeetSideDuration).setEase(LeanTweenType.linear).setOnComplete(() => YeetSidewaysTween(ball, tweenposition, fullrounds, direction));
+            yeettarget = wayout.position;
+            onComplete = () => WayIn(wayin, ball, tweenposition, fullrounds - 1, direction);
         }
-
+        else
+        {
+            yeettarget = tweenposition;
+            onComplete = () => FinishBallTween(ball);
+        }
+        
+        yeetSideDuration = Mathf.Abs((yeettarget.x - ball.transform.position.x) * tweenSideYeetSpeed);
+        LeanTween.scaleY(ball, 0.5f, yeetSideDuration).setEase(scaleSideYeetCurveY);
+        LeanTween.scaleX(ball, 2f, yeetSideDuration).setEase(scaleSideYeetCurveX);
+        LeanTween.move(ball, yeettarget, yeetSideDuration).setEase(LeanTweenType.linear).setOnComplete(onComplete);
+        
         Debug.Log("It works ???" + tweenposition);
     }
+
+    private void WayIn(Transform wayin, GameObject ball, Vector3 tweenposition, int fullrounds, int direction)
+    {
+        ball.transform.localScale = Vector3.one;
+        ball.transform.position = wayin.transform.position;
+        YeetSidewaysTween(ball, tweenposition, fullrounds, direction);
+    }
+
+
 }
