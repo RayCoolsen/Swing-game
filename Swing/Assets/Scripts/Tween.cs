@@ -14,9 +14,16 @@ public class Tween : MonoBehaviour
     [SerializeField] private float collapseTime = 0.5f;
     [SerializeField] private LeanTweenType collapseEaseType = LeanTweenType.linear;
 
+    [Header("Yeet Tweening")]
+    [SerializeField] private float tweenUpYeetSpeed = 1f;
+    [SerializeField] private AnimationCurve positionUpYeetCurve;
+    [SerializeField] private AnimationCurve scaleUpYeetCurveY;
+    [SerializeField] private AnimationCurve scaleUpYeetCurveX;
+
+
     [Header("Player Tweening")]
     [SerializeField] private Vector3 playerSizeTween = Vector3.one * 0.5f;
-    [SerializeField] private float playertweentime = 0.25f;
+    [SerializeField] private float playertweentime = 0.2f;
     [SerializeField] private AnimationCurve scalePlayerSizeCurve;
 
 
@@ -39,10 +46,10 @@ public class Tween : MonoBehaviour
         float tweenduration = (tweenposition - ball.transform.position).magnitude * tweenThrowSpeed;
         LeanTween.scaleY(ball, 2f, tweenduration).setEase(scaleThrowCurveY);
         LeanTween.scaleX(ball, 0f, tweenduration).setEase(scaleThrowCurveX);
-        LeanTween.move(ball, tweenposition, tweenduration).setEase(positionThrowCurve).setOnComplete(FinishThrowTween);
+        LeanTween.move(ball, tweenposition, tweenduration).setEase(positionThrowCurve).setOnComplete(FinishBallTween);
     }
 
-    private void FinishThrowTween()
+    private void FinishBallTween()
     {
         scaleGrid.SetTweeningState(false);
         Debug.Log("Done Tweening!!!");
@@ -64,8 +71,14 @@ public class Tween : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void YeetBallTween()
+    public void YeetBallTween(GameObject ball, Vector3 tweenposition, int fullrounds, int direction)
     {
-        
+        //Starting with yeeting up
+        float tweenDurationUp = tweenposition.y - ball.transform.position.y * tweenUpYeetSpeed;
+        Vector3 tweenUpPosition = new Vector3(ball.transform.position.x, tweenposition.y, 0);
+
+        LeanTween.scaleY(ball, 2f, tweenDurationUp).setEase(scaleUpYeetCurveY);
+        LeanTween.scaleX(ball, 0.5f, tweenDurationUp).setEase(scaleUpYeetCurveX);
+        LeanTween.move(ball, tweenUpPosition, tweenDurationUp).setEase(positionUpYeetCurve).setOnComplete(FinishBallTween);
     }
 }
