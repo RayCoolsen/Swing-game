@@ -80,6 +80,7 @@ public class ScaleGrid : MonoBehaviour
 
     private void Update()
     {
+        //+++ WeightScaleTipWarning
         if (Input.GetKeyDown(KeyCode.RightArrow) && playerpos < width-1)
         {
             tween.PlayerSizeTween(player);
@@ -150,6 +151,7 @@ public class ScaleGrid : MonoBehaviour
 
             TiltScales();
 
+            //Test
             for (int x = 0; x < width; x++)
             {
                 ScaleHeight(x);
@@ -162,7 +164,7 @@ public class ScaleGrid : MonoBehaviour
             }
 
 
-
+            #region Plan???
             //Loop1
             // Loop2
             //  Check Matches - Exit2
@@ -176,9 +178,8 @@ public class ScaleGrid : MonoBehaviour
             //CheckGameOver
             //
             // Bälle hinterherwerfen ???
-
-
-            //Test
+            #endregion
+        
         }
         else
         {
@@ -364,14 +365,14 @@ public class ScaleGrid : MonoBehaviour
     {
         bool tilt = false;
 
-        for (int i = 0; i < scalePositions.Length; i++)
+        for (int scale = 0; scale < scalePositions.Length; scale++)
         {
-            ScalePosition newScalePos = TiltCheck(i);
-            if(scalePositions[i] != newScalePos)
+            ScalePosition newScalePos = TiltCheck(scale);
+            if(scalePositions[scale] != newScalePos)
             {
                 tilt = true;
-                (bool, int, int)  newyeet = Tilt(i, scalePositions[i], newScalePos);
-                scalePositions[i] = newScalePos;
+                (bool, int, int)  newyeet = Tilt(scale, scalePositions[scale], newScalePos);
+                scalePositions[scale] = newScalePos;
                 if (newyeet.Item1)
                     Yeet(newyeet.Item2, newyeet.Item3);
             }
@@ -379,16 +380,16 @@ public class ScaleGrid : MonoBehaviour
 
         return tilt;
 
-        (bool, int, int) Tilt(int i, ScalePosition oldScalePos, ScalePosition newScalePos)
+        (bool, int, int) Tilt(int scale, ScalePosition oldScalePos, ScalePosition newScalePos)
         {
             bool yeeting = (newScalePos != ScalePosition.Balance);
             int yeetslot = 0;
-            int links = 2 * i;
-            int rechts = 2 * i + 1;
+            int links = 2 * scale;
+            int rechts = 2 * scale + 1;
             int change = newScalePos - oldScalePos;
             int weightdifference = slotweight[rechts] - slotweight[links];
 
-            Debug.Log("Tilt old: " + scalePositions[i] + " new: " + newScalePos);
+            Debug.Log("Tilt old: " + oldScalePos + " new: " + newScalePos);
             Debug.Log("ScalePosition change: " + change);
             Debug.Log("weightdifference: " + weightdifference);
 
