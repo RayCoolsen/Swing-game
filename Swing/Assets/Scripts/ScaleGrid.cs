@@ -82,6 +82,11 @@ public class ScaleGrid : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            ResetBalls();
+        }
+
         if (gameover)
             return;
 
@@ -119,7 +124,6 @@ public class ScaleGrid : MonoBehaviour
             ScaleHeight(playerpos);
             HeightWarning(playerpos);
         }
-
     }
 
     IEnumerator ThrowingBall(int slot, GameObject ball)
@@ -555,5 +559,19 @@ public class ScaleGrid : MonoBehaviour
     {
         Debug.Log("Game Over!");
         gameover = true;
+    }
+
+    private void ResetBalls()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if(scaleGrid[x,y] != null)
+                {
+                    scaleGrid[x, y].transform.position = new Vector3(x, y, 0);
+                }
+            }
+        }
     }
 }
