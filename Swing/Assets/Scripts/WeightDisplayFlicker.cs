@@ -8,12 +8,11 @@ public class WeightDisplayFlicker : MonoBehaviour
     TextMeshProUGUI mytext;
     Color mycolor;
     Color alphacolor;
-    bool weightwarning = false;
     [SerializeField] private AnimationCurve weightWarningCurve;
     [SerializeField] private float weightwarningtime = 0.5f;
 
 
-    void Start()
+    private void Start()
     {
         mytext = GetComponentInChildren<TextMeshProUGUI>();
         mycolor = mytext.color;
@@ -23,20 +22,7 @@ public class WeightDisplayFlicker : MonoBehaviour
 
     public void TweenWeightWarning()
     {
-        weightwarning = true;
-        TweenWeightWarningProcess();
-    }
-
-    private void TweenWeightWarningProcess()
-    {
-        if (weightwarning)
-        {
-            LeanTween.value(gameObject, updateAlphaValueCallback, mycolor, alphacolor, weightwarningtime).setEase(weightWarningCurve).setOnComplete(TweenWeightWarningProcess);
-        }
-        else
-        {
-            mytext.color = mycolor;
-        }
+        LeanTween.value(gameObject, updateAlphaValueCallback, mycolor, alphacolor, weightwarningtime).setEase(weightWarningCurve).setOnComplete(TweenWeightWarning);
     }
 
     private void updateAlphaValueCallback(Color val)
@@ -47,6 +33,7 @@ public class WeightDisplayFlicker : MonoBehaviour
 
     public void StopWeightWarning()
     {
-        weightwarning = false;
+        LeanTween.cancel(gameObject);
+        mytext.color = mycolor;
     }
 }

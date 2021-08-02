@@ -212,6 +212,9 @@ public class ScaleGrid : MonoBehaviour
                 }
             }
 
+            // Stopping the WeightWarning
+            if (playerball != null)
+                TiltWarning(playerpos, playerball.GetComponent<Ball>().GetWeight());
 
             #region Plan???
             //Loop1
@@ -228,7 +231,7 @@ public class ScaleGrid : MonoBehaviour
             //
             // Bälle hinterherwerfen ???
             #endregion
-        
+
         }
         else
         {
