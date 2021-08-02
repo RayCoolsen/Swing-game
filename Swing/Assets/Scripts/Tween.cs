@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using TMPro;
 
 public class Tween : MonoBehaviour
 {
@@ -30,7 +31,6 @@ public class Tween : MonoBehaviour
     [SerializeField] private Vector3 playerSizeTween = Vector3.one * 0.5f;
     [SerializeField] private float playertweentime = 0.2f;
     [SerializeField] private AnimationCurve scalePlayerSizeCurve;
-
 
     ScaleGrid scaleGrid;
 
@@ -135,6 +135,4 @@ public class Tween : MonoBehaviour
         ball.transform.position = wayin.transform.position;
         YeetSidewaysTween(ball, tweenposition, fullrounds, direction);
     }
-
-
 }

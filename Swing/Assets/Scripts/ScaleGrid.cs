@@ -97,7 +97,11 @@ public class ScaleGrid : MonoBehaviour
             player.transform.position += Vector3.right;
             playerpos++;
             if(playerball != null)
+            {
                 playerball.transform.position = player.transform.position;
+                TiltWarning(playerpos, playerball.GetComponent<Ball>().GetWeight());
+            }
+
             HeightWarning(playerpos);
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow) && playerpos > 0)
@@ -106,7 +110,10 @@ public class ScaleGrid : MonoBehaviour
             player.transform.position += Vector3.left;
             playerpos--;
             if (playerball != null)
+            {
                 playerball.transform.position = player.transform.position;
+                TiltWarning(playerpos, playerball.GetComponent<Ball>().GetWeight());
+            }
             HeightWarning(playerpos);
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -190,6 +197,8 @@ public class ScaleGrid : MonoBehaviour
                 }
             }
             #endregion
+
+            //CheckMatches() ???
 
             //Test
             for (int x = 0; x < width; x++)
@@ -403,12 +412,18 @@ public class ScaleGrid : MonoBehaviour
 
     private ScalePosition TiltCheck(int i)
     {
+        return WeightToScalePosition(slotweight[2 * i], slotweight[2 * i + 1]);
+    }
+
+    private ScalePosition WeightToScalePosition(int weightleft, int weightright)
+    {
         ScalePosition newScalePos;
-        if (slotweight[2 * i] > slotweight[2 * i + 1])
+
+        if (weightleft > weightright)
         {
             newScalePos = ScalePosition.Left;
         }
-        else if (slotweight[2 * i] < slotweight[2 * i + 1])
+        else if (weightleft < weightright)
         {
             newScalePos = ScalePosition.Right;
         }
@@ -416,6 +431,7 @@ public class ScaleGrid : MonoBehaviour
         {
             newScalePos = ScalePosition.Balance;
         }
+
         return newScalePos;
     }
 
@@ -547,6 +563,38 @@ public class ScaleGrid : MonoBehaviour
         }else
         {
             p_SpriteRenderer.color = Color.white;
+        }
+    }
+
+    private void TiltWarning(int slot, int addWeight)
+    {
+        ScalePosition newScalePosition;
+        int scale = slot/2;
+        GameObject weighttext1;
+        GameObject weighttext2;
+
+        for (int x = 0; x < width; x++)
+        {
+            scaleDisplay[x].GetComponent<WeightDisplayFlicker>().StopWeightWarning();
+        }
+
+        if ((slot % 2) == 0)
+        {
+            newScalePosition = WeightToScalePosition(slotweight[slot] + addWeight, slotweight[slot + 1]);
+            weighttext1 = scaleDisplay[slot];
+            weighttext2 = scaleDisplay[slot + 1];
+        }
+        else
+        {
+            newScalePosition = WeightToScalePosition(slotweight[slot - 1], slotweight[slot] + addWeight);
+            weighttext1 = scaleDisplay[slot - 1];
+            weighttext2 = scaleDisplay[slot];
+        }
+
+        if(newScalePosition != scalePositions[scale])
+        {
+            weighttext1.GetComponent<WeightDisplayFlicker>().TweenWeightWarning();
+            weighttext2.GetComponent<WeightDisplayFlicker>().TweenWeightWarning();
         }
     }
 
