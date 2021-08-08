@@ -32,7 +32,7 @@ public class Tween : MonoBehaviour
     [SerializeField] private float playertweentime = 0.2f;
     [SerializeField] private AnimationCurve scalePlayerSizeCurve;
 
-    ScaleGrid scaleGrid;
+    private ScaleGrid scaleGrid;
 
     private void Awake()
     {

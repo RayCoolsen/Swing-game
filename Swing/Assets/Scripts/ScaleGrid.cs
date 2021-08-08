@@ -93,44 +93,50 @@ public class ScaleGrid : MonoBehaviour
         //+++ WeightScaleTipWarning
         if (Input.GetKeyDown(KeyCode.RightArrow) && playerpos < width-1)
         {
-            tween.PlayerSizeTween(player);
-            player.transform.position += Vector3.right;
-            playerpos++;
-            if(playerball != null)
-            {
-                playerball.transform.position = player.transform.position;
-                TiltWarning(playerpos, playerball.GetComponent<Ball>().GetWeight());
-            }
-
-            HeightWarning(playerpos);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && playerpos > 0)
+            MovePlayer(playerpos + 1);
+        }else if (Input.GetKeyDown(KeyCode.LeftArrow) && playerpos > 0)
         {
-            tween.PlayerSizeTween(player);
-            player.transform.position += Vector3.left;
-            playerpos--;
-            if (playerball != null)
-            {
-                playerball.transform.position = player.transform.position;
-                TiltWarning(playerpos, playerball.GetComponent<Ball>().GetWeight());
-            }
-            HeightWarning(playerpos);
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+            MovePlayer(playerpos - 1);
+        }else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            //Throwing Ball
-            if(playerball!=null)
-                StartCoroutine(ThrowingBall(playerpos, playerball));
-
-            //Loading New Ball
-            playerball = supplyGrid[playerpos, 0];
-            playerball.transform.position = player.transform.position;
-
-            // New Ball Supply
-            SupplyReload(playerpos);
-            ScaleHeight(playerpos);
-            HeightWarning(playerpos);
+            ReleaseBall();
         }
+    }
+
+    public void MovePlayer(int slot)
+    {
+        if (playerpos == slot || gameover)
+            return;
+
+        playerpos = slot;
+        tween.PlayerSizeTween(player);
+        Vector3 newPlayerPos = new Vector3(slot, player.transform.position.y, 0);
+        player.transform.position = newPlayerPos;
+        if (playerball != null)
+        {
+            playerball.transform.position = newPlayerPos;
+            TiltWarning(playerpos, playerball.GetComponent<Ball>().GetWeight());
+        }
+        HeightWarning(playerpos);
+    }
+
+    public void ReleaseBall()
+    {
+        if (gameover)
+            return;
+
+        //Throwing Ball
+        if (playerball != null)
+            StartCoroutine(ThrowingBall(playerpos, playerball));
+
+        //Loading New Ball
+        playerball = supplyGrid[playerpos, 0];
+        playerball.transform.position = player.transform.position;
+
+        // New Ball Supply
+        SupplyReload(playerpos);
+        ScaleHeight(playerpos);
+        HeightWarning(playerpos);
     }
 
     IEnumerator ThrowingBall(int slot, GameObject ball)
@@ -147,7 +153,7 @@ public class ScaleGrid : MonoBehaviour
 
             yield return new WaitWhile(() => tweening);
 
-            Debug.Log("StartCalculating");
+            //Debug.Log("StartCalculating");
 
             while (CheckMatches())
             {
@@ -178,7 +184,7 @@ public class ScaleGrid : MonoBehaviour
                     {
                         GameObject yeetball = YeetBall(newyeet.Item2);
                         (int, int) YeetResult = YeetImpact(newyeet.Item2, newyeet.Item3);
-                        Debug.Log("Yeet!!!");
+                        //Debug.Log("Yeet!!!");
 
                         if (yeetball != null)
                         {
@@ -281,7 +287,7 @@ public class ScaleGrid : MonoBehaviour
                 if (CheckMatchPos(x, y))
                 {
                     match = true;
-                    Debug.Log("Found Match: " + x + " " + y);
+                    //Debug.Log("Found Match: " + x + " " + y);
                     List<(int, int)> newPoppedBalls = FloodFill(x, y);
                     foreach (var item in newPoppedBalls)
                     {
@@ -452,18 +458,18 @@ public class ScaleGrid : MonoBehaviour
         int change = newScalePos - oldScalePos;
         int weightdifference = slotweight[rechts] - slotweight[links];
 
-        Debug.Log("Tilt old: " + oldScalePos + " new: " + newScalePos);
-        Debug.Log("ScalePosition change: " + change);
-        Debug.Log("weightdifference: " + weightdifference);
+        //Debug.Log("Tilt old: " + oldScalePos + " new: " + newScalePos);
+        //Debug.Log("ScalePosition change: " + change);
+        //Debug.Log("weightdifference: " + weightdifference);
 
         if (change <= -1 && scaleGrid[links, 0] != null && scaleGrid[links, 0].GetComponent<Ball>().GetBallType() == -1)
         {
-            Debug.Log("in if-1");
+            //Debug.Log("in if-1");
             InsertBallFromBelow(scaleGrid[links, 0], rechts);
             scaleGrid[links, 0] = null;
             if (change == -2 && scaleGrid[links, 1] != null && scaleGrid[links, 1].GetComponent<Ball>().GetBallType() == -1)
             {
-                Debug.Log("in if-2");
+                //Debug.Log("in if-2");
                 InsertBallFromBelow(scaleGrid[links, 1], rechts);
                 scaleGrid[links, 1] = null;
             }
@@ -475,12 +481,12 @@ public class ScaleGrid : MonoBehaviour
 
         if (change >= 1 && scaleGrid[rechts, 0] != null && scaleGrid[rechts, 0].GetComponent<Ball>().GetBallType() == -1)
         {
-            Debug.Log("in if1");
+            //Debug.Log("in if1");
             InsertBallFromBelow(scaleGrid[rechts, 0], links);
             scaleGrid[rechts, 0] = null;
             if (change == 2 && scaleGrid[rechts, 1] != null && scaleGrid[rechts, 1].GetComponent<Ball>().GetBallType() == -1)
             {
-                Debug.Log("in if2");
+                //Debug.Log("in if2");
                 InsertBallFromBelow(scaleGrid[rechts, 1], links);
                 scaleGrid[rechts, 1] = null;
             }
@@ -497,7 +503,7 @@ public class ScaleGrid : MonoBehaviour
     private GameObject YeetBall(int slot)
     {
         int curheight = ScaleHeight(slot);
-        Debug.Log("searching ball for yeeting");
+        //Debug.Log("searching ball for yeeting");
         GameObject yeetball = null;
 
         if (curheight - 1 >= 0 && scaleGrid[slot, curheight - 1] != null && scaleGrid[slot, curheight - 1].GetComponent<Ball>().GetBallType() != -1)
@@ -521,8 +527,8 @@ public class ScaleGrid : MonoBehaviour
         if (endslot < 0)
             endslot += width;
 
-        Debug.Log("startingslot: " + startingslot + ", distance: " + distance);
-        Debug.Log("endslot: " + endslot + ", fullrounds: " + fullrounds);
+        //Debug.Log("startingslot: " + startingslot + ", distance: " + distance);
+        //Debug.Log("endslot: " + endslot + ", fullrounds: " + fullrounds);
 
         return (endslot, fullrounds);
     }
@@ -608,7 +614,7 @@ public class ScaleGrid : MonoBehaviour
 
     private void GameOver()
     {
-        Debug.Log("Game Over!");
+        //Debug.Log("Game Over!");
         gameover = true;
     }
 
@@ -624,5 +630,10 @@ public class ScaleGrid : MonoBehaviour
                 }
             }
         }
+    }
+
+    public int GetGridWidth()
+    {
+        return width;
     }
 }

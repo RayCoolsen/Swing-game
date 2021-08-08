@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 988214380}
   - component: {fileID: 988214379}
   - component: {fileID: 988214381}
+  - component: {fileID: 988214382}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -619,6 +620,19 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &988214382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988214378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7c7e24a4c05672489efa06058ac4e4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropTouchHeight: 7.5
 --- !u!1 &1486498910
 GameObject:
   m_ObjectHideFlags: 0
