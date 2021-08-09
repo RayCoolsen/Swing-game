@@ -58,7 +58,7 @@ public class Tween : MonoBehaviour
     {
         ball.transform.localScale = Vector3.one;
         scaleGrid.SetTweeningState(false);
-        Debug.Log("Done Tweening!!!");
+        //Debug.Log("Done Tweening!!!");
     }
 
     public void CollapseTween(int x, GameObject[] collapsSlot)
@@ -108,7 +108,7 @@ public class Tween : MonoBehaviour
             wayin = leftOut;
         }
 
-        Debug.Log("fullrounds: " + fullrounds);
+        //Debug.Log("fullrounds: " + fullrounds);
 
         if (fullrounds > 0)
         {
@@ -126,7 +126,7 @@ public class Tween : MonoBehaviour
         LeanTween.scaleX(ball, 2f, yeetSideDuration).setEase(scaleSideYeetCurveX);
         LeanTween.move(ball, yeettarget, yeetSideDuration).setEase(LeanTweenType.linear).setOnComplete(onComplete);
         
-        Debug.Log("It works ???" + tweenposition);
+        //Debug.Log("It works ???" + tweenposition);
     }
 
     private void WayIn(Transform wayin, GameObject ball, Vector3 tweenposition, int fullrounds, int direction)

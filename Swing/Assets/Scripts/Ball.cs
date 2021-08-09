@@ -17,7 +17,8 @@ public class Ball : MonoBehaviour
 
     public void Initialize(int maxtype, int maxweight)
     {
-        type = Random.Range(0, maxtype+1);
+        maxtype = Mathf.Min(maxtype, ballsprites.Length);
+        type = Random.Range(0, maxtype);
         weight = Random.Range(1, maxweight + 1);
         m_SpriteRenderer.sprite = ballsprites[type];
         textDisplay.text = weight.ToString();

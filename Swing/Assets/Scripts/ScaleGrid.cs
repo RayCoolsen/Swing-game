@@ -22,8 +22,14 @@ public class ScaleGrid : MonoBehaviour
     private int[] slotweight = new int[width];
     [SerializeField] private int[] slotheight = new int[width];
 
-    [SerializeField] private int startmaxweight = 5;
-    [SerializeField] private int startmaxtype = 3;
+    [SerializeField] private int maxweight = 5;
+    [SerializeField] private int maxtype = 3;
+
+    private int thrownballs = 0;
+    private int level = 1;
+    [SerializeField] private int weightlevelup = 50;
+    [SerializeField] private int typelevelup = 100;
+    [SerializeField] private TextMeshProUGUI leveldisplay;
 
 
     private Tween tween;
@@ -74,7 +80,7 @@ public class ScaleGrid : MonoBehaviour
             for (int y = 0; y < supheight; y++)
             {
                 var newsupball = Instantiate(ballprefab, new Vector3(x, y + height + 1, 0), Quaternion.identity);
-                newsupball.GetComponent<Ball>().Initialize(startmaxtype, startmaxweight);
+                newsupball.GetComponent<Ball>().Initialize(maxtype, maxweight);
                 supplyGrid[x, y] = newsupball;
             }
         }
@@ -125,14 +131,28 @@ public class ScaleGrid : MonoBehaviour
         if (gameover)
             return;
 
+
         //Throwing Ball
         if (playerball != null)
-            StartCoroutine(ThrowingBall(playerpos, playerball));
+        {
+            // Leveling Up the difficulty.
+            thrownballs++;
+            if (thrownballs % weightlevelup == 0)
+                maxweight++;
+            if (thrownballs % typelevelup == 0)
+            {
+                maxtype++;
+                level++;
+                leveldisplay.text = $"Level: {level}";
+            }
 
+            StartCoroutine(ThrowingBall(playerpos, playerball));
+        }
+            
         //Loading New Ball
         playerball = supplyGrid[playerpos, 0];
         playerball.transform.position = player.transform.position;
-
+        
         // New Ball Supply
         SupplyReload(playerpos);
         ScaleHeight(playerpos);
@@ -557,7 +577,7 @@ public class ScaleGrid : MonoBehaviour
             supplyGrid[slot, y].transform.position = new Vector3(slot, y + height + 1, 0);
         }
         var newball = Instantiate(ballprefab, new Vector3(slot, supheight + height, 0), Quaternion.identity);
-        newball.GetComponent<Ball>().Initialize(startmaxtype, startmaxweight);
+        newball.GetComponent<Ball>().Initialize(maxtype, maxweight);
         supplyGrid[slot, supheight - 1] = newball;
     }
 
@@ -615,10 +635,11 @@ public class ScaleGrid : MonoBehaviour
     private void GameOver()
     {
         //Debug.Log("Game Over!");
+        leveldisplay.text = $"Level: {level} - GAME OVER";
         gameover = true;
     }
 
-    private void ResetBalls()
+    public void ResetBalls()
     {
         for (int x = 0; x < width; x++)
         {

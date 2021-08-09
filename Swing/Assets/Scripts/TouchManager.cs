@@ -5,6 +5,7 @@ using UnityEngine;
 public class TouchManager : MonoBehaviour
 {
     [SerializeField] private float dropTouchHeight = 7.5f;
+    [SerializeField] private float resetTouchHeight = -0.75f;
     private int gridWidth;
 
     private ScaleGrid scaleGrid;
@@ -40,6 +41,11 @@ public class TouchManager : MonoBehaviour
                 int touchPlayerPos = (int)(touchPosition.x + 0.5f);
                 touchPlayerPos = Mathf.Clamp(touchPlayerPos, 0, gridWidth - 1);
                 scaleGrid.MovePlayer(touchPlayerPos);
+
+                if (touchPosition.y < resetTouchHeight && touch.phase == TouchPhase.Began)
+                {
+                    scaleGrid.ResetBalls();
+                }
             }
 
             
