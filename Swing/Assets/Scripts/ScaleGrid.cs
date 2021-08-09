@@ -19,6 +19,8 @@ public class ScaleGrid : MonoBehaviour
     GameObject[,] supplyGrid = new GameObject[width, supheight];
     GameObject[] scaleDisplay = new GameObject[width];
     TextMeshProUGUI[] scaleDisplayText = new TextMeshProUGUI[width];
+    private float scaleWeightSmallDisplay = 35;
+    private float scaleWeightBigDisplay = 50;
     private int[] slotweight = new int[width];
     [SerializeField] private int[] slotheight = new int[width];
 
@@ -45,7 +47,6 @@ public class ScaleGrid : MonoBehaviour
     }
 
     ScalePosition[] scalePositions = new ScalePosition[width/2];
-
 
     private void Awake()
     {
@@ -294,6 +295,13 @@ public class ScaleGrid : MonoBehaviour
         }
         slotweight[slot] = weight;
         scaleDisplayText[slot].text = weight.ToString();
+        if (weight > 99)
+        {
+            scaleDisplayText[slot].fontSize = scaleWeightSmallDisplay;
+        }else
+        {
+            scaleDisplayText[slot].fontSize = scaleWeightBigDisplay;
+        }
     }
     //////////////////////////////
     private bool CheckMatches() // int startx = 0, int starty = 0, int endx = width, int endy= height  (Optimization?) // endx = min(endx,width) 
