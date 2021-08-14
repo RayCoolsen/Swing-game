@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
+  m_UiScaleMode: 2
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -338,6 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballprefab: {fileID: 7534644039376571722, guid: db9286ffc426eba48a39ffeb7d78f569, type: 3}
+  scalePrefab: {fileID: 389424787951661403, guid: 42216de81b4d9da4e9c2b6f9df1d37da, type: 3}
   scaleDisplayprefab: {fileID: 302621568899512970, guid: 0e2cc6bf488e5a74cbe4002769da8383, type: 3}
   player: {fileID: 1541399768}
   slotheight: 0000000000000000000000000000000000000000000000000000000000000000

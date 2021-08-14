@@ -10,6 +10,7 @@ public class ScaleGrid : MonoBehaviour
     private static int height = 9;
     private static int supheight = 2;
     [SerializeField] private GameObject ballprefab;
+    [SerializeField] private GameObject scalePrefab;
     [SerializeField] private GameObject scaleDisplayprefab;
     [SerializeField] private GameObject player;
     private SpriteRenderer p_SpriteRenderer;
@@ -61,6 +62,7 @@ public class ScaleGrid : MonoBehaviour
         for (int i = 0; i < scalePositions.Length; i++)
         {
             scalePositions[i] = ScalePosition.Balance;
+            Instantiate(scalePrefab, new Vector3(2*i + 0.5f , -1, 0), Quaternion.identity);
         }
 
         for (int x = 0; x < width; x++)
@@ -72,7 +74,7 @@ public class ScaleGrid : MonoBehaviour
             slotheight[x] = 1;
 
             // Instantiate the Scale Display
-            var newscale = Instantiate(scaleDisplayprefab, new Vector3(x, -1, 0), Quaternion.identity);
+            var newscale = Instantiate(scaleDisplayprefab, new Vector3(x, -1.75f, 0), Quaternion.identity);
             scaleDisplay[x] = newscale;
             scaleDisplayText[x] = newscale.GetComponentInChildren<TextMeshProUGUI>();
             slotweight[x] = 0;
