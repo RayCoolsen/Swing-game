@@ -347,6 +347,7 @@ MonoBehaviour:
   weightlevelup: 100
   typelevelup: 250
   leveldisplay: {fileID: 1051476272}
+  collapseHeight: 5
 --- !u!4 &988214380
 Transform:
   m_ObjectHideFlags: 0

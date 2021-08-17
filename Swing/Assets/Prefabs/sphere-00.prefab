@@ -180,6 +180,49 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9e639109faa007b4ba2d4143f8f1c931, type: 3}
   - {fileID: 21300000, guid: b89202bf1da04f7478aea9fd46784993, type: 3}
   textDisplay: {fileID: 2896069702888454245}
+  expandCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9
+      value: 0.8
+      inSlope: 1.8870215
+      outSlope: 1.8870215
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.95
+      value: -0.5
+      inSlope: -12.969936
+      outSlope: -12.969936
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  collapseTime: 0.5
 --- !u!1 &7809441436267864995
 GameObject:
   m_ObjectHideFlags: 0

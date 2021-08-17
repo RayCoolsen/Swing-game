@@ -34,6 +34,8 @@ public class ScaleGrid : MonoBehaviour
     [SerializeField] private int typelevelup = 100;
     [SerializeField] private TextMeshProUGUI leveldisplay;
 
+    [SerializeField] private int collapseHeight = 5;
+
 
     private Tween tween;
     private bool tweening = false;
@@ -185,7 +187,6 @@ public class ScaleGrid : MonoBehaviour
                 yield return new WaitForSeconds(tween.GetCollapseTime()); // Waiting for the Collapse to finish
             }
 
-            //BallCompression
 
 
             for (int x = 0; x < width; x++)
@@ -226,6 +227,10 @@ public class ScaleGrid : MonoBehaviour
                 }
             }
             #endregion
+
+
+            //BallCompression
+            TowerCollapseCheck();
 
             //CheckMatches() ???
 
@@ -634,6 +639,78 @@ public class ScaleGrid : MonoBehaviour
         {
             weighttext1.GetComponent<WeightDisplayFlicker>().TweenWeightWarning();
             weighttext2.GetComponent<WeightDisplayFlicker>().TweenWeightWarning();
+        }
+    }
+
+    private void TowerCollapseCheck()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            bool ballFound = false;
+            int balltyp = 0;
+            int ballsSuccession = 0;
+            int maxy=0;
+            for (int y = 0; y < height; y++)
+            {
+                /// 5 Bälle finden
+                /// 
+                if (scaleGrid[x, y] == null)
+                    break;
+
+                maxy = y;
+
+                if (!ballFound)
+                {
+                    // First ball found
+                    ballFound = true;
+                    balltyp = scaleGrid[x, y].GetComponent<Ball>().GetBallType();
+                    ballsSuccession = 1;
+                    continue;
+                }
+                int nextballtype = scaleGrid[x, y].GetComponent<Ball>().GetBallType();
+
+                if(balltyp == nextballtype)
+                {
+                    ballsSuccession += 1;
+                }
+                else
+                {
+                    if(ballsSuccession >= collapseHeight)
+                    {
+                        TowerCollapse(x,y, ballsSuccession);
+                    }
+                    ballsSuccession = 1;
+                    balltyp = nextballtype;
+                }
+            }
+            if (ballsSuccession >= collapseHeight)
+            {
+                TowerCollapse(x, maxy, ballsSuccession);
+            }
+            CollapseScaleGridSlot(x);
+        }
+    }
+
+    private void TowerCollapse(int x, int y, int height)
+    {
+        //Debug.Log("Tower Found + x: " + x + " y: " + y + " height: " + height);
+        int totalweight = 0;
+        Vector3 collapsetarget = new Vector3(x, y - height + 1, 0);
+        for (int i = y; i > y-height; i--)
+        {
+            Ball curBall = scaleGrid[x, i].GetComponent<Ball>();
+            totalweight += curBall.GetWeight();
+
+            if(i == y - height + 1)
+            {
+                curBall.Expanding();
+                curBall.SetWeight(totalweight);
+            }
+            else
+            {
+                curBall.Collapse(collapsetarget);
+                scaleGrid[x, i] = null;
+            }
         }
     }
 
